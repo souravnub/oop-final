@@ -100,4 +100,40 @@ class DoctorManager:
             print("Can't find the doctor....")
             return
         self.display_doctor_info(doctorFound)
+    
+    def edit_doctor_info(self):
+        doctorToEdit = input("Please enter the id of the doctor that you want to edit their information: ")
+        
+        if(doctorToEdit not in self.get_doctors_ids()):
+            print('Doctor to edit not found....')
+            return
+
+        name = input("Enter new Name: ")
+        spec = input("Enter new Specilist in: ")
+        workTiming = input("Enter new Timing: ")
+        qual = input("Enter new Qualification: ")
+        room = input("Enter new Room number: ")
+
+        with open('doctors.txt', 'w') as file: 
+            self.read_doctors_file()
+            data = self.doctors
+
+            data_str = []
+
+            newList = ['id_name_specilist_timing_qualification_roomNb']
+
+            newDoctor = Doctor(doctorToEdit, name,spec, workTiming, qual, room)
+            for doctor in data:
+                if(doctor.getId() == doctorToEdit):
+                    newList.append(newDoctor)
+                else:
+                    newList.append(doctor)
+            
+            for obj in newList:
+                data_str.append(obj.__str__())
+
+            file.write('\n'.join(data_str))
+            print(f'\nDoctor whose ID is {doctorToEdit} has been edited\n')
+
+            self.read_doctors_file()
 
